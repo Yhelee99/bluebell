@@ -1,0 +1,32 @@
+package mod
+
+var Conf Config
+
+type Config struct {
+	*App
+	*Logger
+	*Mysql
+}
+
+type App struct {
+	Name    string `mapstructure:"name"`
+	Version string `mapstructure:"version"`
+	Port    int    `mapstructure:"port"`
+}
+
+type Logger struct {
+	Filename   string `mapstructure:"Filename"`
+	MaxSize    int    `mapstructure:"MaxSize"`
+	MaxAge     int    `mapstructure:"MaxAge"`
+	MaxBackups int    `mapstructure:"MaxBackups"`
+	Compress   bool   `mapstructure:"Compress"`
+	Level      string `mapstructure:"Level"`
+}
+
+type Mysql struct {
+	Port     int    `mapstructure:"port"`
+	Password string `mapstructure:"password"`
+	Host     string `mapstructure:"host"`
+	Dbname   string `mapstructure:"dbname"`
+	Username string `mapstructure:"username"`
+}

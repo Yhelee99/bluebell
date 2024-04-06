@@ -1,0 +1,22 @@
+{
+  "App": {
+    "name": "bluebell",
+    "version": "v0.0.1",
+    "port": 8080
+  },
+  "logger": {
+    "Filename": "logs/bluebell.log",
+    "MaxSize": 500,
+    "MaxAge": 30,
+    "MaxBackups": 7,
+    "Compress": true,
+    "Level": "debug"
+  },
+  "mysql": {
+    "port": 668,
+    "password": "123456",
+    "host": "localhost",
+    "dbname": "bluebell",
+    "username": "root"
+  }
+}
