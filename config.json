@@ -18,5 +18,9 @@
     "host": "localhost",
     "dbname": "bluebell",
     "username": "root"
+  },
+  "snowflake":{
+    "startTime": "2024-04-06",
+    "machineId": 1
   }
 }
