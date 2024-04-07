@@ -19,8 +19,6 @@ func Init() {
 		mod.Conf.Mysql.Dbname,
 	)
 
-	fmt.Printf("%v\n", dsn)
-
 	var err error
 	db, err = sqlx.Connect("mysql", dsn)
 	if err != nil {
@@ -29,5 +27,5 @@ func Init() {
 		return
 	}
 
-	zap.L().Info("初始化数据库成功！")
+	//zap.L().Info("初始化数据库成功！")
 }
