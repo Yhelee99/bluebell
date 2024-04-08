@@ -1,16 +1,29 @@
 package logic
 
 import (
-	mysql "bluebell/dao/mysql"
+	dao "bluebell/dao/mysql"
+	"bluebell/mod"
 	snowflake "bluebell/pkg"
 )
 
-func SignUp() {
+func SignUp(p *mod.ParamSignUp) error {
 	//1.判断用户存不存在
-	mysql.QueryUserByUsername()
+	if err := dao.CheckUserExist(p.Username); err != nil {
+		return err
+	}
 	//2.生成UID
-	snowflake.GetSnowflakeId()
-	//3.入库
-	mysql.InsertUser()
-	//4.
+	userid := snowflake.GetSnowflakeId()
+
+	//3.生成用户
+	u := &mod.User{
+		userid,
+		p.Username,
+		p.Username,
+	}
+
+	//4.入库
+	if err := dao.InsertUser(*u); err != nil {
+		return err
+	}
+	return nil
 }

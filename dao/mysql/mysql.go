@@ -11,6 +11,7 @@ import (
 var db *sqlx.DB
 
 func Init() {
+
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		mod.Conf.Mysql.Username,
 		mod.Conf.Mysql.Password,
