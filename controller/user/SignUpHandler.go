@@ -31,7 +31,6 @@ func SignUpHandler(c *gin.Context) {
 				"err":  controller.RemoveTopStruct(errs.Translate(controller.Trans)),
 			})
 		}
-
 		return
 	}
 	//参数业务校验
@@ -42,6 +41,7 @@ func SignUpHandler(c *gin.Context) {
 	//	})
 	//	return
 	//}
+
 	//2.业务处理
 	if err := logic.SignUp(p); err != nil {
 		c.JSON(http.StatusOK, gin.H{

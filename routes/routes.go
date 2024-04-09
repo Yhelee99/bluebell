@@ -22,6 +22,7 @@ func Setup(mode string) http.Handler {
 
 	//注册业务路由
 	r.POST("/signup", controller.SignUpHandler)
+	r.POST("/signin", controller.SignInHandler)
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

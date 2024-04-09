@@ -20,7 +20,7 @@ func SignUp(p *mod.ParamSignUp) error {
 	u := &mod.User{
 		userid,
 		p.Username,
-		p.Username,
+		p.Password,
 	}
 
 	//4.入库
