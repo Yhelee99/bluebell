@@ -10,7 +10,13 @@ import (
 	"net/http"
 )
 
-func Setup() http.Handler {
+func Setup(mode string) http.Handler {
+
+	//判断是否是开发模式，如果是不显示gin框架的debug信息
+	if mode == gin.ReleaseMode {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	r := gin.New()
 	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true))
 

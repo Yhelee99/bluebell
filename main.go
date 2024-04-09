@@ -35,7 +35,7 @@ func main() {
 		return
 	}
 	//注册路由
-	r := routes.Setup()
+	r := routes.Setup(mod.Conf.App.Mode)
 
 	//优雅关机
 	controller.ShutDown(r)

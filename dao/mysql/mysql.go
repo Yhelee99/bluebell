@@ -23,10 +23,7 @@ func Init() {
 	var err error
 	db, err = sqlx.Connect("mysql", dsn)
 	if err != nil {
-		zap.L().Fatal("连接数据库失败！")
-		zap.Error(err)
-		return
+		zap.L().Debug("连接数据库失败！")
+		panic(err)
 	}
-
-	//zap.L().Info("初始化数据库成功！")
 }

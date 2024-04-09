@@ -16,11 +16,27 @@ import (
 )
 
 func Init() {
-	var l = new(zapcore.Level)
-	l.UnmarshalText([]byte(mod.Conf.Logger.Level))
-	core := zapcore.NewCore(getEncoder(), getWriter(), l)
+	core := checkMode(mod.Conf.App.Mode)
 	logger := zap.New(core)
 	zap.ReplaceGlobals(logger)
+}
+
+// checkMode 确定运行模式，区分日志打印模式
+func checkMode(mode string) zapcore.Core {
+	var l = new(zapcore.Level)
+	l.UnmarshalText([]byte(mod.Conf.Logger.Level))
+	var core zapcore.Core
+	if mode == "dev" {
+		//进入开发模式，日志输出到终端及文件中
+		consoleEncorder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
+		core = zapcore.NewTee(
+			zapcore.NewCore(consoleEncorder, zapcore.Lock(os.Stdout), zapcore.DebugLevel),
+			zapcore.NewCore(getEncoder(), getWriter(), l),
+		)
+	} else {
+		core = zapcore.NewCore(getEncoder(), getWriter(), l)
+	}
+	return core
 }
 
 func getEncoder() zapcore.Encoder {
