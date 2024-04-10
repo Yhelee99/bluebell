@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 func SignInHandler(c *gin.Context) {
@@ -20,18 +19,10 @@ func SignInHandler(c *gin.Context) {
 
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
-			c.JSON(http.StatusOK, gin.H{
-				"msg":  "登录失败，参数不正确！",
-				"code": 100002,
-				"err":  err.Error(),
-			})
+			controller.ResponseError(c, controller.ErrorCodeInvalidParams)
 			return
 		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"msg":  "登录失败，参数不正确！",
-				"code": 100002,
-				"err":  controller.RemoveTopStruct(errs.Translate(controller.Trans)),
-			})
+			controller.ResponseErrorWithMessage(c, controller.ErrorCodeInvalidParams, errs.Translate(controller.Trans))
 			return
 		}
 	}
@@ -39,13 +30,9 @@ func SignInHandler(c *gin.Context) {
 	//2:业务处理
 	//3:返回响应
 	if err := logic.SignIn(*p); err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"msg": "用户名或密码错误！",
-		})
+		controller.ResponseError(c, controller.ErrorCodeInvalidPassword)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"msg": "登录成功！",
-	})
-
+	controller.ResponseSuccess(c, controller.SuccessCode)
+	return
 }

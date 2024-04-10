@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 func SignUpHandler(c *gin.Context) {
@@ -18,18 +17,10 @@ func SignUpHandler(c *gin.Context) {
 
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
-			c.JSON(http.StatusOK, gin.H{
-				"msg":  "请求参数有误！",
-				"code": 100001,
-				"err":  err.Error(),
-			})
+			controller.ResponseError(c, controller.ErrorCodeInvalidParams)
 			return
 		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"msg":  "请求参数有误！",
-				"code": 100001,
-				"err":  controller.RemoveTopStruct(errs.Translate(controller.Trans)),
-			})
+			controller.ResponseErrorWithMessage(c, controller.ErrorCodeInvalidPassword, errs.Translate(controller.Trans))
 		}
 		return
 	}
@@ -44,13 +35,9 @@ func SignUpHandler(c *gin.Context) {
 
 	//2.业务处理
 	if err := logic.SignUp(p); err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"msg": "注册失败！",
-		})
+		controller.ResponseError(c, controller.ErrorCodeUserAlreadyExist)
 		return
 	}
 	//3.返回响应
-	c.JSON(http.StatusOK, gin.H{
-		"msg": "注册成功!",
-	})
+	controller.ResponseSuccess(c, controller.SuccessCode)
 }
