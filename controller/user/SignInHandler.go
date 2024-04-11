@@ -29,10 +29,11 @@ func SignInHandler(c *gin.Context) {
 
 	//2:业务处理
 	//3:返回响应
-	if err := logic.SignIn(*p); err != nil {
+	token, err := logic.SignIn(*p)
+	if err != nil {
 		controller.ResponseError(c, controller.ErrorCodeInvalidPassword)
 		return
 	}
-	controller.ResponseSuccess(c, controller.SuccessCode)
+	controller.ResponseSuccess(c, token)
 	return
 }

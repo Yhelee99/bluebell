@@ -18,9 +18,9 @@ func SignUp(p *mod.ParamSignUp) error {
 
 	//3.生成用户
 	u := &mod.User{
-		userid,
-		p.Username,
-		p.Password,
+		UserId:   userid,
+		Username: p.Username,
+		Password: p.Password,
 	}
 
 	//4.入库

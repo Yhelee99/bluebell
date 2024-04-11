@@ -27,6 +27,6 @@ func Init(startTime string, machineId int64) (err error) {
 }
 
 // 生成一个int64的GenId（可指定其他数据类型）
-func GetSnowflakeId() string {
-	return node.Generate().String()
+func GetSnowflakeId() int64 {
+	return node.Generate().Int64()
 }

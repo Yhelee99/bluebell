@@ -21,7 +21,10 @@ func Setup(mode string) http.Handler {
 	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true))
 
 	//注册业务路由
+
+	//注册
 	r.POST("/signup", controller.SignUpHandler)
+	//登录
 	r.POST("/signin", controller.SignInHandler)
 
 	r.GET("/", func(c *gin.Context) {
