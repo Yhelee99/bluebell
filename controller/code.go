@@ -9,6 +9,8 @@ const (
 	ErrorCodeUserNotExist
 	ErrorCodeInvalidPassword
 	ErrorCodeServerBusy
+	ErrorCodInvalidAuth
+	ErrorCodeNeedLogin
 )
 
 var codeMessageMap = map[ResCode]string{
@@ -18,6 +20,8 @@ var codeMessageMap = map[ResCode]string{
 	ErrorCodeUserNotExist:     "用户不存在！",
 	ErrorCodeInvalidPassword:  "用户名或密码不对！",
 	ErrorCodeServerBusy:       "服务繁忙！",
+	ErrorCodInvalidAuth:       "无效的Token！",
+	ErrorCodeNeedLogin:        "请先登录！",
 }
 
 func (code ResCode) getMessage() string {

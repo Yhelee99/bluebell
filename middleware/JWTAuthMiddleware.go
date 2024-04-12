@@ -1,12 +1,13 @@
-package middle
+package middleware
 
 import (
 	"bluebell/controller"
 	"bluebell/pkg/jwt"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"strings"
 )
+
+const CtxUserIdKey = "userId"
 
 func JwtAuthMiddleware(c *gin.Context) {
 	//获取请求头参数
@@ -14,10 +15,7 @@ func JwtAuthMiddleware(c *gin.Context) {
 
 	//先判断是否为空
 	if authHeader == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"code": controller.ErrorCodeInvalidParams,
-			"msg":  "请求头Token为空！",
-		})
+		controller.ResponseError(c, controller.ErrorCodeNeedLogin)
 		c.Abort() //立即停止请求并返回响应
 		return
 	}
@@ -25,10 +23,7 @@ func JwtAuthMiddleware(c *gin.Context) {
 	//处理请求头数据 SplitN返回切片
 	post := strings.SplitN(authHeader, " ", 2)
 	if !(len(post) != 2 && post[0] != "Bearer") {
-		c.JSON(http.StatusOK, gin.H{
-			"code": controller.ErrorCodeInvalidParams,
-			"msg":  "Token不合法！",
-		})
+		controller.ResponseError(c, controller.ErrorCodInvalidAuth)
 		c.Abort()
 		return
 	}
@@ -36,13 +31,12 @@ func JwtAuthMiddleware(c *gin.Context) {
 	//验证token
 	mc, err := jwt.ParseToken(post[1])
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": controller.ErrorCodeInvalidParams,
-			"msg":  "无效的Token！",
-		})
+		controller.ResponseError(c, controller.ErrorCodInvalidAuth)
+		return
 	}
 
 	//将当前的用户id保存到上下文c中
-	c.Set("UserId", mc.UserId)
+	//c.Set("UserId", mc.UserId)	`项目中很多地方要用的参数，定义为常量`
+	c.Set(CtxUserIdKey, mc.UserId)
 	c.Next() //验证通过，进行下个响应，后续处理可以通过c.Get("UserId")来获取当前用户信息
 }
