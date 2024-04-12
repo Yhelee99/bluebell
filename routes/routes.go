@@ -3,6 +3,7 @@ package routes
 import (
 	"bluebell/controller/user"
 	"bluebell/logger"
+	"bluebell/middleware"
 	"bluebell/mod"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,7 @@ func Setup(mode string) http.Handler {
 	//注册
 	r.POST("/signup", controller.SignUpHandler)
 	//登录
-	r.POST("/signin", controller.SignInHandler)
+	r.POST("/signin", middleware.JwtAuthMiddleware(), controller.SignInHandler)
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
