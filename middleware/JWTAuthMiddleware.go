@@ -22,14 +22,14 @@ func JwtAuthMiddleware() func(c *gin.Context) {
 
 		//处理请求头数据 SplitN返回切片
 		post := strings.SplitN(authHeader, " ", 2)
-		if !(len(post) != 2 && post[0] != "Bearer") {
+		if !(len(post) == 2 && post[0] == "Bearer") {
 			controller.ResponseError(c, controller.ErrorCodInvalidAuth)
 			c.Abort()
 			return
 		}
 
 		//验证token
-		mc, err := jwt.ParseToken(post[1])
+		mc, err := jwt.ParseAccessToken(post[1])
 		if err != nil {
 			controller.ResponseError(c, controller.ErrorCodInvalidAuth)
 			return

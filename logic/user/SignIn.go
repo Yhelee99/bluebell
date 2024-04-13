@@ -6,7 +6,7 @@ import (
 	"bluebell/pkg/jwt"
 )
 
-func SignIn(p mod.ParamSignIn) (token string, err error) {
+func SignIn(p mod.ParamSignIn) (accessToken string, err error) {
 	user := &mod.User{
 		Username: p.Username,
 		Password: p.Password,
@@ -16,9 +16,9 @@ func SignIn(p mod.ParamSignIn) (token string, err error) {
 	if err = mysql.Login(user); err != nil {
 		return "", err
 	}
-	token, err = jwt.GenToken(user.Username, user.UserId)
+	accessToken, err = jwt.GenToken(user.Username, user.UserId)
 	if err != nil {
 		return "", err
 	}
-	return token, err
+	return
 }
