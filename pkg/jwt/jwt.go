@@ -4,6 +4,7 @@ import (
 	"bluebell/mod"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"go.uber.org/zap"
 	"time"
 )
 
@@ -25,9 +26,10 @@ func GenToken(username string, userid int64) (string, error) {
 
 // ParseAccessToken 解析AccessToken，验证AccessToken是否合法
 func ParseAccessToken(tokenString string) (*mod.MyClaims, error) {
-	var m *mod.MyClaims
+	var m = new(mod.MyClaims) //此处主要指针的使用，需要在这里分配内存地址，ParseWithClaims才可以解码到结构体中，然后返回这个内存地址的指针
 	token, err := jwt.ParseWithClaims(tokenString, m, getSecret)
 	if err != nil {
+		zap.L().Debug("errorinfo:", zap.Error(err))
 		return nil, err
 	}
 	if token.Valid {

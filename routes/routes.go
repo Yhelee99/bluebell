@@ -26,7 +26,13 @@ func Setup(mode string) http.Handler {
 	//注册
 	r.POST("/signup", controller.SignUpHandler)
 	//登录
-	r.POST("/signin", middleware.JwtAuthMiddleware(), controller.SignInHandler)
+	r.POST("/signin", controller.SignInHandler)
+	//业务，需要保持登录状态才响应
+	r.POST("/ping", middleware.JwtAuthMiddleware(), func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"msg": "pang",
+		})
+	})
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

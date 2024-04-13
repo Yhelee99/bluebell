@@ -32,6 +32,7 @@ func JwtAuthMiddleware() func(c *gin.Context) {
 		mc, err := jwt.ParseAccessToken(post[1])
 		if err != nil {
 			controller.ResponseError(c, controller.ErrorCodInvalidAuth)
+			c.Abort()
 			return
 		}
 
