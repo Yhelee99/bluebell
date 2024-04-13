@@ -7,6 +7,7 @@ type Config struct {
 	*Logger
 	*Mysql
 	*Snowflake
+	*Rides
 }
 
 type App struct {
@@ -36,4 +37,11 @@ type Mysql struct {
 type Snowflake struct {
 	StartTime string `mapstructure:"startTime"`
 	MachineId int64  `mapstructure:"machineId"`
+}
+
+type Rides struct {
+	Addr     string `mapstructure:"addr"`
+	Db       int    `mapstructure:"db"`
+	Password string `mapstructure:"password"`
+	PoolSize int    `mapstructure:"poolsize"`
 }

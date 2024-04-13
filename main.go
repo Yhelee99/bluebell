@@ -3,6 +3,7 @@ package main
 import (
 	"bluebell/controller"
 	"bluebell/dao/mysql"
+	"bluebell/dao/redis"
 	"bluebell/logger"
 	"bluebell/mod"
 	snowflake "bluebell/pkg"
@@ -21,6 +22,9 @@ func main() {
 
 	//初始化数据库连接
 	mysql.Init()
+
+	//初始化redis
+	redis.Init()
 
 	//初始化翻译器
 	if err := controller.InitTrans("zh"); err != nil {

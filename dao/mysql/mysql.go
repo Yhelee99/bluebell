@@ -10,7 +10,7 @@ import (
 
 var db *sqlx.DB
 
-func Init() {
+func Init() (err error) {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		mod.Conf.Mysql.Username,
@@ -20,10 +20,10 @@ func Init() {
 		mod.Conf.Mysql.Dbname,
 	)
 
-	var err error
 	db, err = sqlx.Connect("mysql", dsn)
 	if err != nil {
-		zap.L().Debug("连接数据库失败！")
-		panic(err)
+		zap.L().Error("连接数据库失败！")
+		return
 	}
+	return
 }

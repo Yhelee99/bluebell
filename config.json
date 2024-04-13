@@ -23,5 +23,11 @@
   "snowflake":{
     "startTime": "2024-04-06",
     "machineId": 1
+  },
+  "redis": {
+    "addr": "localhost:669",
+    "db": 0,
+    "password": "",
+    "poolsize": 100
   }
 }

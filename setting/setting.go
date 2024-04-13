@@ -25,6 +25,6 @@ func Init() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		zap.L().Info("配置文件被修改！")
-		viper.Unmarshal(mod.Conf)
+		viper.Unmarshal(&mod.Conf)
 	})
 }
