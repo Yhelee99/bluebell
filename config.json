@@ -2,7 +2,7 @@
   "App": {
     "name": "bluebell",
     "version": "v0.0.1",
-    "port": 8081,
+    "port": 8080,
     "mode": "dev"
   },
   "logger": {

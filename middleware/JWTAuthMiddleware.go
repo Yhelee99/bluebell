@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// JwtAuthMiddleware 验证token的中间件
 func JwtAuthMiddleware() func(c *gin.Context) {
 	return func(c *gin.Context) {
 

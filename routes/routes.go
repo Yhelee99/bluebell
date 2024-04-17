@@ -1,7 +1,8 @@
 package routes
 
 import (
-	"bluebell/controller/user"
+	"bluebell/controller"
+	user "bluebell/controller/user"
 	"bluebell/logger"
 	"bluebell/middleware"
 	"bluebell/mod"
@@ -22,15 +23,30 @@ func Setup(mode string) http.Handler {
 	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true))
 
 	//注册业务路由
+	//登录
+	r.POST("/signin", user.SignInHandler)
 
 	//注册
-	r.POST("/signup", controller.SignUpHandler)
-	//登录
-	r.POST("/signin", controller.SignInHandler)
-	//业务，需要保持登录状态才响应
-	r.POST("/ping", middleware.JwtAuthMiddleware(), func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"msg": "pang",
+	r.POST("/signup", user.SignUpHandler)
+
+	// api/v1
+	{
+		//创建路由组
+		v1 := r.Group("/api/v1")
+		//使用中间件
+		v1.Use(middleware.JwtAuthMiddleware())
+
+		{
+			//查看社区列表
+			v1.POST("/community", controller.CommunityHandler)
+
+		}
+	}
+
+	//返回404
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"msg": 404,
 		})
 	})
 
