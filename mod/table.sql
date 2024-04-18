@@ -24,3 +24,18 @@ create table  `community`(
     unique key `idx_community_name` (`community_name`)
 ) engine=Innodb default charset=utf8mb4 collate=utf8mb4_general_ci;
 
+create table `post`(
+    `id` bigint(20) not null auto_increment,
+    `post_id` bigint(20) not null COMMENT '帖子id',
+    `title` varchar(128) COLLATE utf8mb4_general_ci not null COMMENT '标题',
+    `content` varchar(8192) COLLATE utf8mb4_general_ci not null COMMENT '内容',
+    `author_id` bigint(20) not null COMMENT '作者的用户id',
+    `community_id` bigint(20) not null COMMENT '所属的社区id',
+    `status` tinyint(4) not null default '1' COMMENT '帖子状态',
+    `create_time` timestamp not null default current_timestamp COMMENT '创建时间',
+    `update_time` timestamp not null default current_timestamp on update current_timestamp COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_post_id` (`post_id`),
+    KEY `idx_author_id` (`author_id`),
+    KEY `idx_community_id` (`community_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
