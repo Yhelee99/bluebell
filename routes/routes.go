@@ -38,7 +38,10 @@ func Setup(mode string) http.Handler {
 
 		{
 			//查看社区列表
-			v1.POST("/community", controller.CommunityHandler)
+			v1.GET("/community", controller.CommunityHandler)
+
+			//根据社区id获取详情
+			v1.GET("/community/:id", controller.CommunityGetInfo)
 
 		}
 	}

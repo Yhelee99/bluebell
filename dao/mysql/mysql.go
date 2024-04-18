@@ -12,7 +12,7 @@ var db *sqlx.DB
 
 func Init() (err error) {
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true&loc=Local", //parseTime=true&loc=Local,设置时间自动转化，时区为本机时区
 		mod.Conf.Mysql.Username,
 		mod.Conf.Mysql.Password,
 		mod.Conf.Mysql.Host,
