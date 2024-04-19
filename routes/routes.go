@@ -43,6 +43,9 @@ func Setup(mode string) http.Handler {
 			//根据社区id获取详情
 			v1.GET("/community/:id", controller.CommunityGetInfo)
 
+			//帖子发表
+			v1.POST("/post", controller.CreatPostHandler)
+
 		}
 	}
 
