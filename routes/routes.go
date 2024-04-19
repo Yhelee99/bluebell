@@ -46,6 +46,9 @@ func Setup(mode string) http.Handler {
 			//帖子发表
 			v1.POST("/post", controller.CreatPostHandler)
 
+			//根据帖子id查询帖子详情
+			v1.GET("/post/:id", controller.GetPostDetail)
+
 		}
 	}
 
