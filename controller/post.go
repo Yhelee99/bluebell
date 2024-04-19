@@ -5,8 +5,10 @@ import (
 	"bluebell/mod"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 )
 
+// CreatPostHandler 创建帖子
 func CreatPostHandler(c *gin.Context) {
 	//1：处理参数
 	p := new(mod.Post)
@@ -32,4 +34,24 @@ func CreatPostHandler(c *gin.Context) {
 	//3：返回响应
 	ResponseSuccess(c, nil)
 	return
+}
+
+// GetPostDetail 获取帖子详情
+func GetPostDetail(c *gin.Context) {
+	//解析数据
+	pidstr := c.Param("id")
+	pid, err := strconv.ParseInt(pidstr, 10, 64)
+	if err != nil {
+		zap.L().Error("解析参数为空！", zap.Error(err))
+		ResponseError(c, ErrorCodeInvalidParams)
+		return
+	}
+	//查询数据
+	date, err := logic.GetPostDetail(pid)
+	if err != nil {
+		zap.L().Error("查库失败！", zap.Error(err))
+		ResponseError(c, ErrorCodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, date)
 }

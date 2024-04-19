@@ -14,3 +14,10 @@ func CreatPost(p *mod.Post) (err error) {
 	}
 	return
 }
+
+func GetPostDetail(pid int64) (p *mod.Post, err error) {
+	p = new(mod.Post)
+	sqlStr := `select author_id,community_id,title,content from post where post_id = ?`
+	err = db.Get(p, sqlStr, pid)
+	return
+}
