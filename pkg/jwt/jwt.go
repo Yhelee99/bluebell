@@ -3,6 +3,7 @@ package jwt
 import (
 	"bluebell/mod"
 	"errors"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"
 	"time"
@@ -33,6 +34,7 @@ func ParseAccessToken(tokenString string) (*mod.MyClaims, error) {
 		return nil, err
 	}
 	if token.Valid {
+		fmt.Printf("==========m=========%v\n", m)
 		return m, nil
 	}
 	return nil, ErrorTokenInvalid
