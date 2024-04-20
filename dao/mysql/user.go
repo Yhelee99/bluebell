@@ -49,17 +49,28 @@ func encryptPassword(psw string) string {
 
 // checkPassword 校验密码
 func Login(u *mod.User) (err error) {
-	sqlString := "select password from user where username = ?"
-	var temp string
-	err = db.Get(&temp, sqlString, u.Username)
+	tempPassword := u.Password
+	sqlString := "select user_id,username,password from user where username = ?"
+	err = db.Get(u, sqlString, u.Username)
 	if err != nil {
 		return err
 	} else if err == sql.ErrNoRows {
 		zap.L().Debug("用户不存在", zap.String("username", u.Username), zap.Error(err))
 		return errors.New("用户不存在！")
 	}
-	if temp != encryptPassword(u.Password) {
+	if u.Password != encryptPassword(tempPassword) {
 		return errors.New("密码错误！")
+	}
+	return
+}
+
+// GetUserInfoById
+func GetUserInfoById(pid int64) (u *mod.User, err error) {
+	u = new(mod.User)
+	sqlStr := "select username from user where user_id = ?"
+	if err = db.Get(u, sqlStr, pid); err != nil {
+		zap.L().Error("GetUserInfo查库失败！", zap.Error(err))
+		return
 	}
 	return
 }
