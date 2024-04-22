@@ -49,6 +49,9 @@ func Setup(mode string) http.Handler {
 			//根据帖子id查询帖子详情
 			v1.GET("/post/:id", controller.GetPostDetail)
 
+			//获取帖子列表
+			v1.GET("/posts", controller.GetPostList)
+
 		}
 	}
 

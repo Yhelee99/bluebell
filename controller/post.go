@@ -55,3 +55,17 @@ func GetPostDetail(c *gin.Context) {
 	}
 	ResponseSuccess(c, date)
 }
+
+// GetPostList 获取帖子列表
+func GetPostList(c *gin.Context) {
+	//获取数据
+	date, err := logic.GetPostList()
+	//返回
+	if err != nil {
+		zap.L().Error("获取帖子列表失败！", zap.Error(err))
+		ResponseError(c, ErrorCodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, date)
+
+}

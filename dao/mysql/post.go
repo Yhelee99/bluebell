@@ -19,7 +19,17 @@ func CreatPost(p *mod.Post) (err error) {
 
 func GetPostDetail(pid int64) (p *mod.Post, err error) {
 	p = new(mod.Post)
-	sqlStr := `select author_id,community_id,title,content,create_time from post where post_id = ?`
+	sqlStr := `select post_id,author_id,community_id,title,content,create_time from post where post_id = ?`
 	err = db.Get(p, sqlStr, pid)
+	return
+}
+
+func GetPostList() (posts []*mod.Post, err error) {
+	sqlStr := `select post_id,author_id,community_id,title,content,create_time from post limit 2`
+	posts = make([]*mod.Post, 0, 2)
+	if err = db.Select(&posts, sqlStr); err != nil {
+		zap.L().Error("GetPostList查库失败！", zap.Error(err))
+		return
+	}
 	return
 }
