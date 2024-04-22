@@ -59,7 +59,10 @@ func GetPostDetail(c *gin.Context) {
 // GetPostList 获取帖子列表
 func GetPostList(c *gin.Context) {
 	//获取数据
-	date, err := logic.GetPostList()
+	//获取分页信息
+	page, size := GetPageSize(c)
+
+	date, err := logic.GetPostList(page, size)
 	//返回
 	if err != nil {
 		zap.L().Error("获取帖子列表失败！", zap.Error(err))

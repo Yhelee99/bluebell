@@ -24,10 +24,10 @@ func GetPostDetail(pid int64) (p *mod.Post, err error) {
 	return
 }
 
-func GetPostList() (posts []*mod.Post, err error) {
-	sqlStr := `select post_id,author_id,community_id,title,content,create_time from post limit 2`
+func GetPostList(page, size int64) (posts []*mod.Post, err error) {
+	sqlStr := `select post_id,author_id,community_id,title,content,create_time from post limit ?,?`
 	posts = make([]*mod.Post, 0, 2)
-	if err = db.Select(&posts, sqlStr); err != nil {
+	if err = db.Select(&posts, sqlStr, (page-1)*size, size); err != nil {
 		zap.L().Error("GetPostList查库失败！", zap.Error(err))
 		return
 	}

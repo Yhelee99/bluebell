@@ -6,12 +6,13 @@ import (
 	"go.uber.org/zap"
 )
 
-func GetPostList() (date []*mod.ApiPost, err error) {
+func GetPostList(page, size int64) (date []*mod.ApiPost, err error) {
 
 	p := new(mod.Post)
 	u := new(mod.User)
 	c := new(mod.CommunityInfo)
-	post, err := mysql.GetPostList()
+
+	post, err := mysql.GetPostList(page, size)
 	if err != nil {
 		return
 	}
