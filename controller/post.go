@@ -4,6 +4,7 @@ import (
 	logic "bluebell/logic/post"
 	"bluebell/mod"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 	"strconv"
 )
@@ -70,5 +71,25 @@ func GetPostList(c *gin.Context) {
 		return
 	}
 	ResponseSuccess(c, date)
+
+}
+
+// PostVoted 帖子投票功能
+func PostVoted(c *gin.Context) {
+	//处理参数
+	p := new(mod.PostVoted)
+	if err := c.ShouldBindJSON(p); err != nil {
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok {
+			ResponseError(c, ErrorCodeInvalidParams)
+			return
+		}
+		msg := RemoveTopStruct(errs.Translate(Trans)) //Trans定义的全局翻译器	RemoveTopStruct去除提示信息中的结构体名称
+		ResponseErrorWithMessage(c, ErrorCodeInvalidParams, msg)
+		return
+	}
+	userid, _ := getUserId(c)
+	logic.PostVoted(p, strconv.Itoa(int(userid)))
+	ResponseSuccess(c, nil)
 
 }

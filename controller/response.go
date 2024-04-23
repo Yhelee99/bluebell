@@ -9,7 +9,7 @@ import (
 type ResponseData struct {
 	Code    ResCode     `json:"code"`
 	Message interface{} `json:"message"`
-	Data    interface{} `json:"data"`
+	Data    interface{} `json:"data,omitempty"` //json操作小技巧，omitempty忽略空值
 }
 
 // ResponseSuccess 返回成功

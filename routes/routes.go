@@ -52,6 +52,9 @@ func Setup(mode string) http.Handler {
 			//获取帖子列表
 			v1.GET("/posts", controller.GetPostList)
 
+			//帖子点赞功能
+			v1.POST("/post/voted", controller.PostVoted)
+
 		}
 	}
 
