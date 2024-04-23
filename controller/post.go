@@ -89,7 +89,11 @@ func PostVoted(c *gin.Context) {
 		return
 	}
 	userid, _ := getUserId(c)
-	logic.PostVoted(p, strconv.Itoa(int(userid)))
+	if err := logic.PostVoted(p, strconv.Itoa(int(userid))); err != nil {
+		zap.L().Error("logic.PostVoted出错！", zap.Error(err))
+		ResponseError(c, ErrorCodeServerBusy)
+
+	}
 	ResponseSuccess(c, nil)
 
 }

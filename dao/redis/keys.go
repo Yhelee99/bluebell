@@ -10,8 +10,7 @@ const (
 )
 
 var (
-	ErrorTimeOut        = errors.New("已超时，无法投票")
-	ErrorInitPostFailed = errors.New("初始化帖子失败")
+	ErrorTimeOut = errors.New("已超时，无法投票")
 )
 
 func getKey(key string) string {

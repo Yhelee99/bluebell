@@ -5,7 +5,6 @@ import (
 	"bluebell/mod"
 )
 
-func PostVoted(p *mod.PostVoted, userid string) {
-	redis.VoteForPost(userid, p.PostId, float64(p.Direction))
-	return
+func PostVoted(p *mod.PostVoted, userid string) error {
+	return redis.VoteForPost(userid, p.PostId, float64(p.Direction))
 }
