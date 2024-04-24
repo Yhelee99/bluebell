@@ -2,6 +2,11 @@ package mod
 
 import "time"
 
+const (
+	OrderByTime  = "time"
+	OrderByScore = "score"
+)
+
 // 内存对齐
 type Post struct {
 	Post_id      int64     `json:"post_id" db:"post_id"`
@@ -17,4 +22,10 @@ type ApiPost struct {
 	Author_name string
 	*Post
 	*CommunityInfo
+}
+
+type PostVoted struct {
+	//Userid从c中获取
+	PostId    string `json:"post_id" binding:"required"`
+	Direction int8   `json:"direction" binding:"oneof=1 -1 0"` // oneof 判断值在一个范围里	required如果传0，会判断为空
 }

@@ -13,8 +13,8 @@ type ParamSignIn struct {
 	Password string `json:"password" binding:"required"`
 }
 
-type PostVoted struct {
-	//Userid从c中获取
-	PostId    string `json:"post_id" binding:"required"`
-	Direction int8   `json:"direction" binding:"oneof=1 -1 0"` // oneof 判断值在一个范围里	required如果传0，会判断为空
+type ParamsGetPostListPlus struct {
+	Page int64  `json:"page" form:"page"` //form 处理ShouldBindQuery参数的tag
+	Size int64  `json:"size" form:"size"`
+	Type string `json:"type" form:"type"`
 }

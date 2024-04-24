@@ -1,7 +1,9 @@
 package redis
 
 import (
+	"bluebell/mod"
 	"github.com/go-redis/redis"
+	"go.uber.org/zap"
 	"math"
 	"time"
 )
@@ -66,4 +68,21 @@ func VoteForPost(userid string, postid string, ticketType float64) error {
 	}
 	_, err := pipeline.Exec()
 	return err
+}
+
+func GetPostListPlus(p *mod.ParamsGetPostListPlus) ([]string, error) {
+	//确定要查的key
+	zap.L().Debug("p传入的", zap.Any("key", p.Type))
+
+	key := getKey(KeyPostTime)
+	if p.Type == "score" {
+		key = getKey(KeyPostScore)
+	}
+
+	zap.L().Debug("确定要查的key", zap.Any("key", key))
+
+	//对redis进行查询，使用ZRevRange  ===> 可查询redis命令手册  https://redis.com.cn/commands.html
+	start := (p.Page - 1) * p.Size
+	end := start + p.Size - 1
+	return rds.ZRevRange(key, start, end).Result() //此处传的是索引
 }

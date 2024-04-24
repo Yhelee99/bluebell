@@ -74,6 +74,28 @@ func GetPostList(c *gin.Context) {
 
 }
 
+// GetPostListPlus 可选排序方式的获取帖子列表的接口
+func GetPostListPlus(c *gin.Context) {
+	//1:处理参数
+	p := &mod.ParamsGetPostListPlus{
+		Page: 0,
+		Size: 10,
+		Type: mod.OrderByScore, //尽量避免代码中出现magic string 即"time"这种写法
+	} //通过定义结构体指定默认值
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("解析失败！", zap.Error(err))
+		return
+	}
+
+	date, err := logic.GetPostListPlus(p)
+	if err != nil {
+		ResponseError(c, ErrorCodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, date)
+
+}
+
 // PostVoted 帖子投票功能
 func PostVoted(c *gin.Context) {
 	//处理参数

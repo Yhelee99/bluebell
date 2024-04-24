@@ -51,6 +51,8 @@ func Setup(mode string) http.Handler {
 
 			//获取帖子列表
 			v1.GET("/posts", controller.GetPostList)
+			//获取帖子列表（可按点赞量或时间排序）
+			v1.GET("/postsplus", controller.GetPostListPlus)
 
 			//帖子点赞功能
 			v1.POST("/post/voted", controller.PostVoted)
