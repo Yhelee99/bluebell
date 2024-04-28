@@ -1,6 +1,8 @@
 package redis
 
-import "errors"
+import (
+	"errors"
+)
 
 const (
 	KeyPerfix     = "bluebell:"   // key前缀，方便业务区分
