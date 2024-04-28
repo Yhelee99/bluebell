@@ -12,13 +12,13 @@ func CreatePost(postId int64) (err error) {
 	pipeline := rds.TxPipeline()
 
 	//初始化帖子时间
-	pipeline.ZAdd(getKey(KeyPostTime), redis.Z{
+	pipeline.ZAdd(getRedisKey(KeyPostTime), redis.Z{
 		Score:  float64(time.Now().Unix()),
 		Member: postId,
 	})
 
 	//初始化帖子分数
-	pipeline.ZAdd(getKey(KeyPostScore), redis.Z{
+	pipeline.ZAdd(getRedisKey(KeyPostScore), redis.Z{
 		Score:  float64(time.Now().Unix()),
 		Member: postId,
 	})

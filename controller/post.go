@@ -3,6 +3,7 @@ package controller
 import (
 	logic "bluebell/logic/post"
 	"bluebell/mod"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
@@ -113,7 +114,16 @@ func PostVoted(c *gin.Context) {
 	userid, _ := getUserId(c)
 	if err := logic.PostVoted(p, strconv.Itoa(int(userid))); err != nil {
 		zap.L().Error("logic.PostVoted出错！", zap.Error(err))
-		ResponseError(c, ErrorCodeServerBusy)
+		var es validator.ValidationErrors
+		ok := errors.As(err, &es)
+		if !ok {
+			zap.L().Error("eerrrroooo")
+			ResponseError(c, ErrorCodeServerBusy)
+			return
+		}
+		msg := RemoveTopStruct(es.Translate(Trans))
+		ResponseErrorWithMessage(c, ErrorCodeNeedLogin, msg)
+		return
 
 	}
 	ResponseSuccess(c, nil)

@@ -14,7 +14,7 @@ func GetPostListPlus(pl *mod.ParamsGetPostListPlus) (date []*mod.ApiPost, err er
 	c := new(mod.CommunityInfo)
 
 	//2:从redis中获取post_id
-	ids, err := redis.GetPostListPlus(pl)
+	ids, err := redis.GetPostID(pl)
 	zap.L().Debug("ids:", zap.Any("ids:", ids))
 	if err != nil {
 		zap.L().Error("redis.GetPostListPlus查询失败！", zap.Error(err))
@@ -28,7 +28,9 @@ func GetPostListPlus(pl *mod.ParamsGetPostListPlus) (date []*mod.ApiPost, err er
 	}
 
 	//根据postlist中的数据，查询帖子详情并返回
-	for _, v := range postlist {
+	//添加需求，返回用户对该帖子投票状态
+
+	for k, v := range postlist {
 		//根据pid查帖子详情
 		p, err = mysql.GetPostDetail(v.Post_id)
 		if err != nil {
@@ -48,11 +50,16 @@ func GetPostListPlus(pl *mod.ParamsGetPostListPlus) (date []*mod.ApiPost, err er
 			zap.L().Error("CommunityGetInfo查库失败！", zap.Error(err))
 			return
 		}
+		dateCount, err := redis.GetUserPostType(ids)
+		if err != nil {
+			return nil, err
+		}
 
 		postdetail := &mod.ApiPost{
-			Author_name:   u.Username,
-			Post:          p,
-			CommunityInfo: c,
+			Author_name:    u.Username,
+			Post:           p,
+			PostApproveNum: dateCount[k],
+			CommunityInfo:  c,
 		}
 		date = append(date, postdetail)
 	}

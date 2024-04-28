@@ -19,7 +19,8 @@ type Post struct {
 }
 
 type ApiPost struct {
-	Author_name string
+	Author_name    string
+	PostApproveNum int64 `json:"post_approve_num"`
 	*Post
 	*CommunityInfo
 }
