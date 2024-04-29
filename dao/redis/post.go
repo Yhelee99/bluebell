@@ -5,7 +5,6 @@ import (
 	"github.com/go-redis/redis"
 	"go.uber.org/zap"
 	"math"
-	"strconv"
 	"time"
 )
 
@@ -32,15 +31,6 @@ const (
 	oneWeekInSeconds = 7 * 24 * 3600
 	oneTicket        = 432
 )
-
-// getPageSize 根据page,size,key,获取数据并排序返回date
-func getPageSize(key string, page, size int64) ([]string, error) {
-	//对redis进行查询，使用ZRevRange  ===> 可查询redis命令手册  https://redis.com.cn/commands.html
-	start := (page - 1) * size
-	end := start + size - 1
-	return rds.ZRevRange(key, start, end).Result() //此处传的是索引
-	/*Zrevrange 命令返回有序集中，指定区间内的成员*/
-}
 
 // VoteForPost 进行帖子投票并存入Redis中
 func VoteForPost(userid string, postid string, ticketType float64) error {
@@ -96,7 +86,10 @@ func GetPostID(p *mod.ParamsGetPostListPlus) ([]string, error) {
 
 	zap.L().Debug("确定要查的key", zap.Any("key", key))
 
-	return getPageSize(key, p.Page, p.Size)
+	//对redis进行查询，使用ZRevRange  ===> 可查询redis命令手册  https://redis.com.cn/commands.html
+	start := (p.Page - 1) * p.Size
+	end := start + p.Size - 1
+	return rds.ZRevRange(key, start, end).Result() //此处传的是索引
 }
 
 func GetUserPostType(ids []string) (date []int64, err error) {
@@ -136,38 +129,4 @@ func GetUserPostType(ids []string) (date []int64, err error) {
 	}
 
 	return
-}
-
-// GetPostListByCommunity 根据分区，获取帖子列表并排序
-func GetPostListByCommunity(p *mod.ParamsGetPostListByCommunity) ([]string, error) {
-	//使用zinterstore把分区的帖子set与帖子分数的zset取交集，生成一个zset
-	//针对新的zset按照之前的逻辑取数据
-
-	//先算排序用的orderkey
-	orderkey := getRedisKey(KeyPostTime)
-	if p.Type == "score" {
-		orderkey = getRedisKey(KeyPostScore)
-	}
-	//拼接要查询的社区key
-	ckey := getRedisKey(KeyCommunity) + strconv.Itoa(int(p.CommunityId))
-	zap.L().Debug("ckey", zap.Any("cky", ckey))
-	//存储到数据的newkey
-	newkey := orderkey + ":" + strconv.Itoa(int(p.CommunityId))
-	zap.L().Debug("newkey", zap.Any("newkey", newkey))
-
-	//利用缓存来减少ZInterStore的计算量
-	if rds.Exists(newkey).Val() < 1 { //计算newkey类型是否存在，<1即为不存在，需要进行ZInterStore计算
-		pipeline := rds.Pipeline()
-		pipeline.ZInterStore(newkey, redis.ZStore{
-			Aggregate: "MAX",
-		}, ckey, orderkey) //新集合的key、参与的集合数、参与交集的集合key
-		pipeline.Expire(newkey, 60*time.Second) //设置newkey过期时间
-		/*Redis 使用 expire 命令设置一个键的过期时间，到时间后 Redis 会自动删除它*/
-		_, err := pipeline.Exec() //记得执行事务
-		if err != nil {
-			return nil, err
-		}
-	}
-	//如果在60s内，直接返回数据
-	return getPageSize(newkey, p.Page, p.Size)
 }

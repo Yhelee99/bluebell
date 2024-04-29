@@ -29,6 +29,7 @@ func GetPostListPlus(pl *mod.ParamsGetPostListPlus) (date []*mod.ApiPost, err er
 
 	//根据postlist中的数据，查询帖子详情并返回
 	//添加需求，返回用户对该帖子投票状态
+
 	for k, v := range postlist {
 		//根据pid查帖子详情
 		p, err = mysql.GetPostDetail(v.Post_id)
@@ -59,7 +60,6 @@ func GetPostListPlus(pl *mod.ParamsGetPostListPlus) (date []*mod.ApiPost, err er
 			Post:           p,
 			PostApproveNum: dateCount[k],
 			CommunityInfo:  c,
-			CommunityId:    v.Community_id,
 		}
 		date = append(date, postdetail)
 	}
