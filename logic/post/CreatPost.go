@@ -18,6 +18,6 @@ func CreatPost(p *mod.Post) (err error) {
 	err = mysql.CreatPost(p)
 
 	//redis操作
-	err = redis.CreatePost(p.Post_id)
+	err = redis.CreatePost(p.Post_id, p.Community_id)
 	return
 }

@@ -57,6 +57,9 @@ func Setup(mode string) http.Handler {
 			//帖子点赞功能
 			v1.POST("/post/voted", controller.PostVoted)
 
+			//根据社区id获取帖子列表并排序
+			v1.GET("/postlistByCommunity", controller.GetPostListByCommunity)
+
 		}
 	}
 
