@@ -129,29 +129,3 @@ func PostVoted(c *gin.Context) {
 	ResponseSuccess(c, nil)
 
 }
-
-// GetPostListByCommunity 按社区获取帖子点赞列表
-func GetPostListByCommunity(c *gin.Context) {
-	//1:处理参数
-	p := &mod.ParamsGetPostListByCommunity{
-		ParamsGetPostListPlus: &mod.ParamsGetPostListPlus{
-			Page: 0,
-			Size: 10,
-			Type: mod.OrderByTime,
-		},
-	} //通过定义结构体指定默认值
-	if err := c.ShouldBindQuery(p); err != nil {
-		zap.L().Error("解析失败！", zap.Error(err))
-		return
-	}
-
-	zap.L().Debug("Parms:", zap.Any("parms", p))
-	date, err := logic.GetPostListByCommunity(p)
-	if err != nil {
-		zap.L().Error("logic.GetPostListByCommunity出错", zap.Error(err))
-		ResponseError(c, ErrorCodeServerBusy)
-		return
-	}
-	ResponseSuccess(c, date)
-
-}
