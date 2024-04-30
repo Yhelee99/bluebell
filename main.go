@@ -12,6 +12,20 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title Bluebell项目
+// @version 1.0
+// @description 一个后端项目
+// @termsOfService https://github.com/Yhelee99
+
+// @contact.name Yhelee
+// @contact.url https://github.com/Yhelee99
+// @contact.email yhelee99@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /api/v1
 func main() {
 
 	//初始化配置

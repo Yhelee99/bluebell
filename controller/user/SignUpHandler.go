@@ -9,6 +9,16 @@ import (
 	"go.uber.org/zap"
 )
 
+// SignUpHandler 用户注册接口
+// @Summary 用户注册接口
+// @Description 用于用户注册
+// @Tags 用户相关
+// @Accept application/json
+// @Produce application/json
+// @Param object json mod.ParamSignUp true "用户信息"
+// @Security ApiKeyAuth
+// @Success 200 {object} _Response
+// @Router /signup [post]
 func SignUpHandler(c *gin.Context) {
 	//1.获取参数，校验参数
 	p := new(mod.ParamSignUp)

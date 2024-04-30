@@ -11,6 +11,16 @@ import (
 )
 
 // CreatPostHandler 创建帖子
+// @Summary 创建帖子
+// @Description 创建帖子接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer Token"
+// @Param object query mod.Post true "创建参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _Response
+// @Router /createpost [post]
 func CreatPostHandler(c *gin.Context) {
 	//1：处理参数
 	p := new(mod.Post)
@@ -39,9 +49,19 @@ func CreatPostHandler(c *gin.Context) {
 }
 
 // GetPostDetail 获取帖子详情
+// @Summary 获取帖子详情
+// @Description 根据postid获取帖子详情
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer Token"
+// @Param postid path int true "帖子id" Format(int64)
+// @Security ApiKeyAuth
+// @Success 200 {object} _Response
+// @Router /post/:id [get]
 func GetPostDetail(c *gin.Context) {
 	//解析数据
-	pidstr := c.Param("id")
+	pidstr := c.Param("postid")
 	pid, err := strconv.ParseInt(pidstr, 10, 64)
 	if err != nil {
 		zap.L().Error("解析参数为空！", zap.Error(err))
@@ -75,7 +95,17 @@ func GetPostList(c *gin.Context) {
 
 }
 
-// GetPostListPlus 可选排序方式的获取帖子列表的接口
+// GetPostListDetermineCommunityId 可选排序方式的获取帖子列表的接口
+// @Summary 获取帖子列表
+// @Description 可选排序方式的获取帖子列表的接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer Token"
+// @Param object query mod.ParamsGetPostList true "获取帖子参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _Response
+// @Router /getpostslist [get]
 func GetPostListDetermineCommunityId(c *gin.Context) {
 	//1:处理参数
 	p := &mod.ParamsGetPostList{
@@ -98,6 +128,16 @@ func GetPostListDetermineCommunityId(c *gin.Context) {
 }
 
 // PostVoted 帖子投票功能
+// @Summary 帖子投票
+// @Description 帖子投票接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer Token"
+// @Param object query mod.PostVoted true "获取帖子参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _Response
+// @Router /post/voted [post]
 func PostVoted(c *gin.Context) {
 	//处理参数
 	p := new(mod.PostVoted)

@@ -10,6 +10,16 @@ import (
 	"go.uber.org/zap"
 )
 
+// SignInHandler 用户登录接口
+// @Summary 用户登录接口
+// @Description 用于用户登录
+// @Tags 用户相关
+// @Accept application/json
+// @Produce application/json
+// @Param object json mod.ParamSignIn true "用户信息"
+// @Security ApiKeyAuth
+// @Success 200 {object} controller._Response
+// @Router /signin [post]
 func SignInHandler(c *gin.Context) {
 
 	//1:获取参数，校验参数

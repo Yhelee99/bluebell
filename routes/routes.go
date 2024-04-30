@@ -22,6 +22,9 @@ func Setup(mode string) http.Handler {
 	r := gin.New()
 	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true))
 
+	//swagger页面渲染
+	r.GET("/swagger/*any")
+
 	//注册业务路由
 	//登录
 	r.POST("/signin", user.SignInHandler)
@@ -44,7 +47,7 @@ func Setup(mode string) http.Handler {
 			v1.GET("/community/:id", controller.CommunityGetInfo)
 
 			//帖子发表
-			v1.POST("/post", controller.CreatPostHandler)
+			v1.POST("/createpost", controller.CreatPostHandler)
 
 			//根据帖子id查询帖子详情
 			v1.GET("/post/:id", controller.GetPostDetail)

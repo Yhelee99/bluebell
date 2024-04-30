@@ -14,8 +14,9 @@ type ParamSignIn struct {
 }
 
 type ParamsGetPostList struct {
-	Page        int64  `json:"page" form:"page"` //form 处理ShouldBindQuery参数的tag
-	Size        int64  `json:"size" form:"size"`
-	Type        string `json:"type" form:"type"`
-	CommunityId int64  `json:"community_id" form:"community_id"`
+	//form 处理ShouldBindQuery参数的tag
+	Page        int64  `json:"page" form:"page"`                 // 页码
+	Size        int64  `json:"size" form:"size"`                 // 每页数据量
+	Type        string `json:"type" form:"type" example:"score"` // 排序依据
+	CommunityId int64  `json:"community_id" form:"community_id"` // 可以为空
 }
