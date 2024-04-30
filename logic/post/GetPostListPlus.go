@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func GetPostListPlus(pl *mod.ParamsGetPostListPlus) (date []*mod.ApiPost, err error) {
+func getPostListPlus(pl *mod.ParamsGetPostList) (date []*mod.ApiPost, err error) {
 
 	p := new(mod.Post)
 	u := new(mod.User)

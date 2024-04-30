@@ -85,7 +85,7 @@ func VoteForPost(userid string, postid string, ticketType float64) error {
 }
 
 // GetPostID 根据请求参数中的page和size获取选中的PostID
-func GetPostID(p *mod.ParamsGetPostListPlus) ([]string, error) {
+func GetPostID(p *mod.ParamsGetPostList) ([]string, error) {
 	//确定要查的key
 	//zap.L().Debug("p传入的", zap.Any("key", p.Type))
 
@@ -139,7 +139,7 @@ func GetUserPostType(ids []string) (date []int64, err error) {
 }
 
 // GetPostListByCommunity 根据分区，获取帖子列表并排序
-func GetPostListByCommunity(p *mod.ParamsGetPostListByCommunity) ([]string, error) {
+func GetPostListByCommunity(p *mod.ParamsGetPostList) ([]string, error) {
 	//使用zinterstore把分区的帖子set与帖子分数的zset取交集，生成一个zset
 	//针对新的zset按照之前的逻辑取数据
 
@@ -150,7 +150,7 @@ func GetPostListByCommunity(p *mod.ParamsGetPostListByCommunity) ([]string, erro
 	}
 	//拼接要查询的社区key
 	ckey := getRedisKey(KeyCommunity) + strconv.Itoa(int(p.CommunityId))
-	zap.L().Debug("ckey", zap.Any("cky", ckey))
+	zap.L().Debug("ckey", zap.Any("ckey", ckey))
 	//存储到数据的newkey
 	newkey := orderkey + ":" + strconv.Itoa(int(p.CommunityId))
 	zap.L().Debug("newkey", zap.Any("newkey", newkey))

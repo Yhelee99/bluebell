@@ -8,7 +8,7 @@ import (
 )
 
 // GetPostListByCommunity 按社区查询redis
-func GetPostListByCommunity(p *mod.ParamsGetPostListByCommunity) (date []*mod.ApiPost, err error) {
+func getPostListByCommunity(p *mod.ParamsGetPostList) (date []*mod.ApiPost, err error) {
 
 	pl := new(mod.Post)
 	u := new(mod.User)

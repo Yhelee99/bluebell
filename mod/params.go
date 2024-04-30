@@ -13,13 +13,9 @@ type ParamSignIn struct {
 	Password string `json:"password" binding:"required"`
 }
 
-type ParamsGetPostListPlus struct {
-	Page int64  `json:"page" form:"page"` //form 处理ShouldBindQuery参数的tag
-	Size int64  `json:"size" form:"size"`
-	Type string `json:"type" form:"type"`
-}
-
-type ParamsGetPostListByCommunity struct {
-	CommunityId int64 `json:"community_id" form:"community_id"`
-	*ParamsGetPostListPlus
+type ParamsGetPostList struct {
+	Page        int64  `json:"page" form:"page"` //form 处理ShouldBindQuery参数的tag
+	Size        int64  `json:"size" form:"size"`
+	Type        string `json:"type" form:"type"`
+	CommunityId int64  `json:"community_id" form:"community_id"`
 }

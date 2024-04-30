@@ -76,9 +76,9 @@ func GetPostList(c *gin.Context) {
 }
 
 // GetPostListPlus 可选排序方式的获取帖子列表的接口
-func GetPostListPlus(c *gin.Context) {
+func GetPostListDetermineCommunityId(c *gin.Context) {
 	//1:处理参数
-	p := &mod.ParamsGetPostListPlus{
+	p := &mod.ParamsGetPostList{
 		Page: 0,
 		Size: 10,
 		Type: mod.OrderByScore, //尽量避免代码中出现magic string 即"time"这种写法
@@ -88,7 +88,7 @@ func GetPostListPlus(c *gin.Context) {
 		return
 	}
 
-	date, err := logic.GetPostListPlus(p)
+	date, err := logic.GetPostListDetermineCommunityId(p)
 	if err != nil {
 		ResponseError(c, ErrorCodeServerBusy)
 		return
@@ -130,7 +130,7 @@ func PostVoted(c *gin.Context) {
 
 }
 
-// GetPostListByCommunity 按社区获取帖子点赞列表
+/*// GetPostListByCommunity 按社区获取帖子点赞列表
 func GetPostListByCommunity(c *gin.Context) {
 	//1:处理参数
 	p := &mod.ParamsGetPostListByCommunity{
@@ -153,5 +153,4 @@ func GetPostListByCommunity(c *gin.Context) {
 		return
 	}
 	ResponseSuccess(c, date)
-
-}
+}*/

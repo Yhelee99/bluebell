@@ -52,13 +52,13 @@ func Setup(mode string) http.Handler {
 			//获取帖子列表
 			v1.GET("/posts", controller.GetPostList)
 			//获取帖子列表（可按点赞量或时间排序）
-			v1.GET("/postsplus", controller.GetPostListPlus)
+			v1.GET("/getpostslist", controller.GetPostListDetermineCommunityId)
 
 			//帖子点赞功能
 			v1.POST("/post/voted", controller.PostVoted)
 
 			//根据社区id获取帖子列表并排序
-			v1.GET("/postlistByCommunity", controller.GetPostListByCommunity)
+			//v1.GET("/postlistByCommunity", controller.GetPostListByCommunity)
 
 		}
 	}
