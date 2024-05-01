@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bluebell/controller"
 	logic "bluebell/logic/user"
 	"bluebell/mod"
 	"encoding/json"
@@ -16,9 +15,9 @@ import (
 // @Tags 用户相关
 // @Accept application/json
 // @Produce application/json
-// @Param object json mod.ParamSignIn true "用户信息"
+// @Param object body mod.ParamSignIn true "用户信息"
 // @Security ApiKeyAuth
-// @Success 200 {object} controller._Response
+// @Success 200 {object} _ResponseUser
 // @Router /signin [post]
 func SignInHandler(c *gin.Context) {
 
@@ -30,10 +29,10 @@ func SignInHandler(c *gin.Context) {
 
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
-			controller.ResponseError(c, controller.ErrorCodeInvalidParams)
+			ResponseError(c, ErrorCodeInvalidParams)
 			return
 		} else {
-			controller.ResponseErrorWithMessage(c, controller.ErrorCodeInvalidParams, errs.Translate(controller.Trans))
+			ResponseErrorWithMessage(c, ErrorCodeInvalidParams, errs.Translate(Trans))
 			return
 		}
 	}
@@ -42,14 +41,14 @@ func SignInHandler(c *gin.Context) {
 	//3:返回响应
 	user, err := logic.SignIn(*p)
 	if err != nil {
-		controller.ResponseError(c, controller.ErrorCodeInvalidPassword)
+		ResponseError(c, ErrorCodeInvalidPassword)
 		return
 	}
 
 	//userid序列化
 	userIdRes, err := json.Marshal(user.UserId)
 
-	controller.ResponseSuccess(c, gin.H{
+	ResponseSuccess(c, gin.H{
 		"UserName": user.Username,
 		"UserId":   string(userIdRes), //int64范围 -2^64+1 ~ 2^64-1   前端(javascript)只能显示-2^53+1 ~ 2^53-1   会出现id值失真的问题
 		"Token":    user.Token,

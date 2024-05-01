@@ -17,9 +17,9 @@ import (
 // @Accept application/json
 // @Produce application/json
 // @Param Authorization header string true "Bearer Token"
-// @Param object query mod.Post true "创建参数"
+// @Param object body mod.Post true "创建参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} _Response
+// @Success 200
 // @Router /createpost [post]
 func CreatPostHandler(c *gin.Context) {
 	//1：处理参数
@@ -57,7 +57,7 @@ func CreatPostHandler(c *gin.Context) {
 // @Param Authorization header string true "Bearer Token"
 // @Param postid path int true "帖子id" Format(int64)
 // @Security ApiKeyAuth
-// @Success 200 {object} _Response
+// @Success 200 {object} _ResponsePost
 // @Router /post/:id [get]
 func GetPostDetail(c *gin.Context) {
 	//解析数据
@@ -79,6 +79,17 @@ func GetPostDetail(c *gin.Context) {
 }
 
 // GetPostList 获取帖子列表
+// @Summary 获取帖子列表
+// @Description 获取帖子列表接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer Token"
+// @Param page query int false "页数"
+// @Param size query int false "每页数量"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePost
+// @Router /posts [get]
 func GetPostList(c *gin.Context) {
 	//获取数据
 	//获取分页信息
@@ -102,9 +113,9 @@ func GetPostList(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param Authorization header string true "Bearer Token"
-// @Param object query mod.ParamsGetPostList true "获取帖子参数"
+// @Param object body mod.ParamsGetPostList true "获取帖子的参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} _Response
+// @Success 200 {object} _ResponsePost
 // @Router /getpostslist [get]
 func GetPostListDetermineCommunityId(c *gin.Context) {
 	//1:处理参数
@@ -134,9 +145,9 @@ func GetPostListDetermineCommunityId(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param Authorization header string true "Bearer Token"
-// @Param object query mod.PostVoted true "获取帖子参数"
+// @Param object body mod.PostVoted true "获取帖子参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} _Response
+// @Success 200
 // @Router /post/voted [post]
 func PostVoted(c *gin.Context) {
 	//处理参数

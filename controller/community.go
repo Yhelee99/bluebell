@@ -20,9 +20,8 @@ controller层，处理请求参数，完成路由转发
 // @Accept application/json
 // @Produce application/json
 // @Param Authorization header string true "Bearer Token"
-// @Param object query models.ParamPostList false "查询参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} _Response
+// @Success 200 {object} _ResponseCommunity
 // @Router /community [get]
 func CommunityHandler(c *gin.Context) {
 	date, err := logic.GetComnunityList()
@@ -43,7 +42,7 @@ func CommunityHandler(c *gin.Context) {
 // @Param Authorization header string true "Bearer Token"
 // @Param id path int false "社区ID,可不传,不传获取全量" Format(int64)
 // @Security ApiKeyAuth
-// @Success 200 {object} _Response
+// @Success 200 {object} _ResponseCommunity
 // @Router /community/:id [get]
 func CommunityGetInfo(c *gin.Context) {
 	//处理请求数据

@@ -2,12 +2,14 @@ package routes
 
 import (
 	"bluebell/controller"
-	user "bluebell/controller/user"
+	_ "bluebell/docs"
 	"bluebell/logger"
 	"bluebell/middleware"
 	"bluebell/mod"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 	"net/http"
 )
@@ -23,14 +25,14 @@ func Setup(mode string) http.Handler {
 	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true))
 
 	//swagger页面渲染
-	r.GET("/swagger/*any")
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//注册业务路由
 	//登录
-	r.POST("/signin", user.SignInHandler)
+	r.POST("/signin", controller.SignInHandler)
 
 	//注册
-	r.POST("/signup", user.SignUpHandler)
+	r.POST("/signup", controller.SignUpHandler)
 
 	// api/v1
 	{
