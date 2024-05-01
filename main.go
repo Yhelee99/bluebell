@@ -35,7 +35,14 @@ func main() {
 	logger.Init()
 
 	//初始化数据库连接
-	mysql.Init()
+	dbConfig := &mod.Mysql{
+		Port:     mod.Conf.Mysql.Port,
+		Password: mod.Conf.Mysql.Password,
+		Host:     mod.Conf.Mysql.Host,
+		Dbname:   mod.Conf.Mysql.Dbname,
+		Username: mod.Conf.Mysql.Username,
+	}
+	mysql.Init(dbConfig)
 
 	//初始化redis
 	redis.Init()
