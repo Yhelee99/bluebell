@@ -435,6 +435,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "cname": {
+                    "description": "社区名称",
                     "type": "string"
                 },
                 "code": {
@@ -446,15 +447,19 @@ const docTemplate = `{
                     ]
                 },
                 "community_id": {
+                    "description": "社区id",
                     "type": "integer"
                 },
                 "community_name": {
+                    "description": "社区名称",
                     "type": "string"
                 },
                 "creattime": {
+                    "description": "创建时间",
                     "type": "string"
                 },
                 "introduction": {
+                    "description": "描述信息",
                     "type": "string"
                 },
                 "message": {
@@ -472,9 +477,11 @@ const docTemplate = `{
             ],
             "properties": {
                 "author_id": {
+                    "description": "作者id",
                     "type": "integer"
                 },
                 "author_name": {
+                    "description": "作者名称",
                     "type": "string"
                 },
                 "code": {
@@ -486,21 +493,27 @@ const docTemplate = `{
                     ]
                 },
                 "community_id": {
+                    "description": "社区id",
                     "type": "integer"
                 },
                 "community_name": {
+                    "description": "社区名称",
                     "type": "string"
                 },
                 "content": {
+                    "description": "帖子内容",
                     "type": "string"
                 },
                 "creat_time": {
+                    "description": "发帖时间",
                     "type": "string"
                 },
                 "creattime": {
+                    "description": "创建时间",
                     "type": "string"
                 },
                 "introduction": {
+                    "description": "描述信息",
                     "type": "string"
                 },
                 "message": {
@@ -508,15 +521,19 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "post_approve_num": {
+                    "description": "帖子被点赞数",
                     "type": "integer"
                 },
                 "post_id": {
+                    "description": "帖子id",
                     "type": "integer"
                 },
                 "status": {
+                    "description": "帖子状态",
                     "type": "integer"
                 },
                 "title": {
+                    "description": "帖子标题",
                     "type": "string"
                 }
             }
@@ -545,9 +562,11 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
+                    "description": "密码",
                     "type": "string"
                 },
                 "username": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -561,13 +580,15 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
+                    "description": "密码",
                     "type": "string"
                 },
                 "re_password": {
-                    "description": "eqfield必须相同",
+                    "description": "确认密码",
                     "type": "string"
                 },
                 "username": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -580,7 +601,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "page": {
-                    "description": "form 处理ShouldBindQuery参数的tag",
+                    "description": "页码",
                     "type": "integer"
                 },
                 "size": {
@@ -603,24 +624,31 @@ const docTemplate = `{
             ],
             "properties": {
                 "author_id": {
+                    "description": "作者id",
                     "type": "integer"
                 },
                 "community_id": {
+                    "description": "社区id",
                     "type": "integer"
                 },
                 "content": {
+                    "description": "帖子内容",
                     "type": "string"
                 },
                 "creat_time": {
+                    "description": "发帖时间",
                     "type": "string"
                 },
                 "post_id": {
+                    "description": "帖子id",
                     "type": "integer"
                 },
                 "status": {
+                    "description": "帖子状态",
                     "type": "integer"
                 },
                 "title": {
+                    "description": "帖子标题",
                     "type": "string"
                 }
             }
@@ -632,7 +660,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "direction": {
-                    "description": "oneof 判断值在一个范围里\trequired如果传0，会判断为空",
+                    "description": "投票类型，1赞同，-1不赞同，0取消投票",
                     "type": "integer",
                     "enum": [
                         1,
@@ -641,7 +669,7 @@ const docTemplate = `{
                     ]
                 },
                 "post_id": {
-                    "description": "Userid从c中获取",
+                    "description": "帖子id，必传",
                     "type": "string"
                 }
             }
