@@ -12,6 +12,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 	"net/http"
+	"time"
 )
 
 func Setup(mode string) http.Handler {
@@ -22,10 +23,17 @@ func Setup(mode string) http.Handler {
 	}
 
 	r := gin.New()
-	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true))
+	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true), middleware.RateLimitMiddleware(2*time.Second, 1))
 
 	//swagger页面渲染
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	//
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"msg": "pong",
+		})
+	})
 
 	//注册业务路由
 	//登录
