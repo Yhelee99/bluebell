@@ -12,6 +12,20 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title Bluebell项目
+// @version 1.0
+// @description 一个后端项目
+// @termsOfService https://github.com/Yhelee99
+
+// @contact.name Yhelee
+// @contact.url https://github.com/Yhelee99
+// @contact.email yhelee99@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /api/v1
 func main() {
 
 	//初始化配置
@@ -21,7 +35,14 @@ func main() {
 	logger.Init()
 
 	//初始化数据库连接
-	mysql.Init()
+	dbConfig := &mod.Mysql{
+		Port:     mod.Conf.Mysql.Port,
+		Password: mod.Conf.Mysql.Password,
+		Host:     mod.Conf.Mysql.Host,
+		Dbname:   mod.Conf.Mysql.Dbname,
+		Username: mod.Conf.Mysql.Username,
+	}
+	mysql.Init(dbConfig)
 
 	//初始化redis
 	redis.Init()

@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bluebell/controller"
 	logic "bluebell/logic/user"
 	"bluebell/mod"
 	"github.com/gin-gonic/gin"
@@ -9,6 +8,16 @@ import (
 	"go.uber.org/zap"
 )
 
+// SignUpHandler 用户注册接口
+// @Summary 用户注册接口
+// @Description 用于用户注册
+// @Tags 用户相关
+// @Accept application/json
+// @Produce application/json
+// @Param object body mod.ParamSignUp true "用户信息"
+// @Security ApiKeyAuth
+// @Success 200
+// @Router /signup [post]
 func SignUpHandler(c *gin.Context) {
 	//1.获取参数，校验参数
 	p := new(mod.ParamSignUp)
@@ -17,10 +26,10 @@ func SignUpHandler(c *gin.Context) {
 
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
-			controller.ResponseError(c, controller.ErrorCodeInvalidParams)
+			ResponseError(c, ErrorCodeInvalidParams)
 			return
 		} else {
-			controller.ResponseErrorWithMessage(c, controller.ErrorCodeInvalidPassword, errs.Translate(controller.Trans))
+			ResponseErrorWithMessage(c, ErrorCodeInvalidPassword, errs.Translate(Trans))
 		}
 		return
 	}
@@ -35,9 +44,9 @@ func SignUpHandler(c *gin.Context) {
 
 	//2.业务处理
 	if err := logic.SignUp(p); err != nil {
-		controller.ResponseError(c, controller.ErrorCodeUserAlreadyExist)
+		ResponseError(c, ErrorCodeUserAlreadyExist)
 		return
 	}
 	//3.返回响应
-	controller.ResponseSuccess(c, controller.SuccessCode)
+	ResponseSuccess(c, SuccessCode)
 }

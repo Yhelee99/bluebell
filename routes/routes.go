@@ -2,14 +2,17 @@ package routes
 
 import (
 	"bluebell/controller"
-	user "bluebell/controller/user"
+	_ "bluebell/docs"
 	"bluebell/logger"
 	"bluebell/middleware"
 	"bluebell/mod"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 	"net/http"
+	"time"
 )
 
 func Setup(mode string) http.Handler {
@@ -20,14 +23,24 @@ func Setup(mode string) http.Handler {
 	}
 
 	r := gin.New()
-	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true))
+	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true), middleware.RateLimitMiddleware(2*time.Second, 1))
+
+	//swagger页面渲染
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	//
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"msg": "pong",
+		})
+	})
 
 	//注册业务路由
 	//登录
-	r.POST("/signin", user.SignInHandler)
+	r.POST("/signin", controller.SignInHandler)
 
 	//注册
-	r.POST("/signup", user.SignUpHandler)
+	r.POST("/signup", controller.SignUpHandler)
 
 	// api/v1
 	{
@@ -44,7 +57,7 @@ func Setup(mode string) http.Handler {
 			v1.GET("/community/:id", controller.CommunityGetInfo)
 
 			//帖子发表
-			v1.POST("/post", controller.CreatPostHandler)
+			v1.POST("/createpost", controller.CreatPostHandler)
 
 			//根据帖子id查询帖子详情
 			v1.GET("/post/:id", controller.GetPostDetail)
@@ -52,10 +65,13 @@ func Setup(mode string) http.Handler {
 			//获取帖子列表
 			v1.GET("/posts", controller.GetPostList)
 			//获取帖子列表（可按点赞量或时间排序）
-			v1.GET("/postsplus", controller.GetPostListPlus)
+			v1.GET("/getpostslist", controller.GetPostListDetermineCommunityId)
 
 			//帖子点赞功能
 			v1.POST("/post/voted", controller.PostVoted)
+
+			//根据社区id获取帖子列表并排序
+			//v1.GET("/postlistByCommunity", controller.GetPostListByCommunity)
 
 		}
 	}

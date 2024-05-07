@@ -13,7 +13,7 @@ create table `user`(
     UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
 ) ENGINE=Innodb DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---创建社区表
+--创建社区列表
 create table  `community`(
     `id` int(11) not null auto_increment,
     `community_id` int(10) unsigned not null,
@@ -26,7 +26,7 @@ create table  `community`(
     unique key `idx_community_name` (`community_name`)
 ) engine=Innodb default charset=utf8mb4 collate=utf8mb4_general_ci;
 
---创建帖子表
+--创建帖子列表
 create table `post`(
     `id` bigint(20) not null auto_increment,
     `post_id` bigint(20) not null COMMENT '帖子id',

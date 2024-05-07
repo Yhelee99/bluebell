@@ -7,14 +7,15 @@ import (
 	"go.uber.org/zap"
 )
 
-func getPostListPlus(pl *mod.ParamsGetPostList) (date []*mod.ApiPost, err error) {
+// GetPostListByCommunity 按社区查询redis
+func getPostListByCommunity(p *mod.ParamsGetPostList) (date []*mod.ApiPost, err error) {
 
-	p := new(mod.Post)
+	pl := new(mod.Post)
 	u := new(mod.User)
 	c := new(mod.CommunityInfo)
 
 	//2:从redis中获取post_id
-	ids, err := redis.GetPostID(pl)
+	ids, err := redis.GetPostListByCommunity(p)
 	zap.L().Debug("ids:", zap.Any("ids:", ids))
 	if err != nil {
 		zap.L().Error("redis.GetPostListPlus查询失败！", zap.Error(err))
@@ -29,10 +30,9 @@ func getPostListPlus(pl *mod.ParamsGetPostList) (date []*mod.ApiPost, err error)
 
 	//根据postlist中的数据，查询帖子详情并返回
 	//添加需求，返回用户对该帖子投票状态
-
 	for k, v := range postlist {
 		//根据pid查帖子详情
-		p, err = mysql.GetPostDetail(v.Post_id)
+		pl, err = mysql.GetPostDetail(v.Post_id)
 		if err != nil {
 			zap.L().Error("GetPostDetail查库失败！", zap.Error(err))
 			return
@@ -57,12 +57,13 @@ func getPostListPlus(pl *mod.ParamsGetPostList) (date []*mod.ApiPost, err error)
 
 		postdetail := &mod.ApiPost{
 			Author_name:    u.Username,
-			Post:           p,
+			Post:           pl,
 			PostApproveNum: dateCount[k],
 			CommunityInfo:  c,
-			CommunityId:    v.Community_id,
+			CommunityId:    0,
 		}
 		date = append(date, postdetail)
 	}
 	return
+
 }
