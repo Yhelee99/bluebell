@@ -5,14 +5,11 @@ import (
 	_ "bluebell/docs"
 	"bluebell/logger"
 	"bluebell/middleware"
-	"bluebell/mod"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 	"net/http"
-	"time"
 )
 
 func Setup(mode string) http.Handler {
@@ -23,7 +20,14 @@ func Setup(mode string) http.Handler {
 	}
 
 	r := gin.New()
-	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true), middleware.RateLimitMiddleware(2*time.Second, 1))
+	//r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true), middleware.RateLimitMiddleware(2*time.Second, 1))
+	r.Use(logger.GinLogger(zap.L()), logger.GinRecovery(zap.L(), true))
+	//渲染
+	r.LoadHTMLFiles("./index.html")
+	r.Static("/static", "./static")
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
 
 	//swagger页面渲染
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -80,13 +84,6 @@ func Setup(mode string) http.Handler {
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"msg": 404,
-		})
-	})
-
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"msg":     fmt.Sprintf("Welcome To %s!", mod.Conf.App.Name),
-			"version": mod.Conf.App.Version,
 		})
 	})
 	return r
