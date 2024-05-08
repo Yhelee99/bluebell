@@ -46,6 +46,20 @@ func Setup(mode string) http.Handler {
 	//注册
 	r.POST("/signup", controller.SignUpHandler)
 
+	//根据帖子id查询帖子详情
+	r.GET("/post/:id", controller.GetPostDetail)
+
+	//获取帖子列表
+	r.GET("/posts", controller.GetPostList)
+	//获取帖子列表（可按点赞量或时间排序）
+	r.GET("/getpostslist", controller.GetPostListDetermineCommunityId)
+
+	//查看社区列表
+	r.GET("/community", controller.CommunityHandler)
+
+	//根据社区id获取详情
+	r.GET("/community/:id", controller.CommunityGetInfo)
+
 	// api/v1
 	{
 		//创建路由组
@@ -54,22 +68,9 @@ func Setup(mode string) http.Handler {
 		v1.Use(middleware.JwtAuthMiddleware())
 
 		{
-			//查看社区列表
-			v1.GET("/community", controller.CommunityHandler)
-
-			//根据社区id获取详情
-			v1.GET("/community/:id", controller.CommunityGetInfo)
 
 			//帖子发表
 			v1.POST("/createpost", controller.CreatPostHandler)
-
-			//根据帖子id查询帖子详情
-			v1.GET("/post/:id", controller.GetPostDetail)
-
-			//获取帖子列表
-			v1.GET("/posts", controller.GetPostList)
-			//获取帖子列表（可按点赞量或时间排序）
-			v1.GET("/getpostslist", controller.GetPostListDetermineCommunityId)
 
 			//帖子点赞功能
 			v1.POST("/post/voted", controller.PostVoted)
