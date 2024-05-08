@@ -16,7 +16,7 @@
   "mysql": {
     "port": 668,
     "password": "123456",
-    "host": "localhost",
+    "host": "mysql",
     "dbname": "bluebell",
     "username": "root"
   },
@@ -25,7 +25,7 @@
     "machineId": 1
   },
   "redis": {
-    "addr": "localhost:669",
+    "addr": "redis:669",
     "db": 1,
     "password": "",
     "poolsize": 100
